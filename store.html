@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>All Produk</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #154360;
+      --primary-light: #2980b9;
+      --card-bg: linear-gradient(145deg, #1c2833, #283747);
+      --text-light: #eaecee;
+      --btn-glow-color: rgba(41, 128, 185, 0.8);
+      --shadow-dark: rgba(0, 0, 0, 0.7);
+      --shadow-light: rgba(41, 128, 185, 0.5);
+      --radius: 10px;
+      --transition-fast: 0.2s cubic-bezier(0.4,0,0.2,1);
+      --transition-smooth: 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #0b132b;
+      color: var(--text-light);
+      user-select: none;
+      transition: background var(--transition-smooth), color var(--transition-smooth);
+      font-size: 14px;
+    }
+
+    header {
+      background: var(--primary);
+      color: var(--text-light);
+      padding: 16px 12px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 6px var(--shadow-dark);
+      user-select: none;
+      box-shadow: 0 4px 12px var(--shadow-dark);
+    }
+
+    .filters, .search {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 12px 8px;
+    }
+
+    .filters button {
+      padding: 8px 14px;
+      border: none;
+      background: var(--primary-light);
+      background-image: linear-gradient(145deg, #3498db, #2980b9);
+      color: white;
+      font-weight: 700;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: 
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        background var(--transition-fast);
+      box-shadow: 0 0 6px transparent;
+      letter-spacing: 0.6px;
+      user-select: none;
+      font-size: 0.85rem;
+    }
+
+    .filters button:hover {
+      transform: scale(1.1) translateY(-2px);
+      box-shadow: 0 0 16px var(--btn-glow-color);
+      background-image: linear-gradient(145deg, #4da6ff, #2980b9);
+    }
+
+    .filters button.active {
+      background-image: linear-gradient(145deg, #1b4f72, #154360);
+      box-shadow: 0 0 20px var(--btn-glow-color);
+      transform: scale(1.12) translateY(-3px);
+    }
+
+    .search input {
+      padding: 10px 14px;
+      width: 280px;
+      max-width: 90vw;
+      border-radius: var(--radius);
+      border: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: box-shadow var(--transition-fast);
+      box-shadow: inset 0 0 5px #1b4f72;
+      background: #102b45;
+      color: var(--text-light);
+      letter-spacing: 0.4px;
+      user-select: text;
+    }
+
+    .search input::placeholder {
+      color: #a3c2f7;
+      opacity: 0.7;
+    }
+
+    .search input:focus {
+      outline: none;
+      box-shadow: 0 0 16px var(--btn-glow-color);
+      background: #154360;
+      color: #d6e6ff;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px 12px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      color: var(--text-light);
+      box-shadow: 0 8px 20px var(--shadow-dark);
+      cursor: pointer;
+      transition:
+        transform var(--transition-smooth),
+        box-shadow var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      user-select: none;
+      font-size: 0.9rem;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 14px 30px var(--shadow-light);
+    }
+
+    .card:active {
+      transform: translateY(-3px) scale(0.95);
+      box-shadow: 0 8px 20px var(--shadow-dark);
+      transition-duration: 0.15s;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px var(--shadow-dark);
+    }
+
+    .price {
+      color: var(--primary-light);
+      font-weight: 700;
+      font-size: 1rem;
+      margin: 12px 0 0;
+      letter-spacing: 0.6px;
+      text-shadow: 0 1px 3px #1b4f72;
+    }
+
+    .btn-order {
+      background-image: linear-gradient(145deg, #1b4f72, #154360);
+      color: #aad4ff;
+      padding: 7px 0;
+      margin-top: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: var(--radius);
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 0 16px transparent;
+      transition:
+        background-image var(--transition-fast),
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        color var(--transition-fast);
+      user-select: none;
+      letter-spacing: 0.7px;
+    }
+
+    .btn-order:hover {
+      background-image: linear-gradient(145deg, #2e5984, #1f4560);
+      box-shadow: 0 0 24px var(--btn-glow-color);
+      transform: scale(1.06);
+      color: #d6e6ff;
+    }
+
+    .btn-order:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 12px var(--btn-glow-color);
+      color: #a3c2f7;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  ALL PRODUK ANDRE HOST
+</header>
+
+<body>
+  
+<div class="filters">
+  <button onclick="filterProducts('all')" class="active">Semua</button>
+  <button onclick="filterProducts('whm')">WHM</button>
+  <button onclick="filterProducts('reseller')">RESELLER</button>
+  <button onclick="filterProducts('jasa')">JASA RENAME</button>
+  <button onclick="filterProducts('script')">SCRIPT HOSTING</button>
+  <button onclick="filterProducts('mwhm')">MWHM</button>
+  <button onclick="filterProducts('murid')">MURID</button>
+  <button onclick="filterProducts('jasteb')">ALL JASTEB</button>
+</div>
+
+<div class="search">
+  <input type="text" id="searchBox" onkeyup="searchProduct()" placeholder="Cari produk..." />
+</div>
+
+<div class="products" id="productList">
+  
+  <div class="card" data-category="whm">
+    <h3>WHM MINI</h3>
+    <p class="price">Rp 15.000</p>
+    <a href="https://wa.me/6281234567890?text=Order+WHM+MINI" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="whm">
+    <h3>WHM MEDIUM</h3>
+    <p class="price">Rp 20.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+WHM+MEDIUM" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+   <div class="card" data-category="whm">
+    <h3>WHM EXTRA</h3>
+    <p class="price">Rp 25.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+WHM+EXTRA" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+   <div class="card" data-category="whm">
+    <h3>WHM SUPER</h3>
+    <p class="price">Rp 30.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+WHM+SUPER" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+   <div class="card" data-category="mwhm">
+    <h3>MWHM MINI</h3>
+    <p class="price">Rp 30.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+MWHM+MINI" class="btn-order" target="_blank">Order</a>
+  </div>
+     <div class="card" data-category="mwhm">
+    <h3>MWHM MEDIUM</h3>
+    <p class="price">Rp 35.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+MWHM+MEDIUM" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+     <div class="card" data-category="mwhm">
+    <h3>MWHM EXTRA</h3>
+    <p class="price">Rp 40.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+MWHM+MWHM" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+     <div class="card" data-category="mwhm">
+    <h3>MWHM SUPER</h3>
+    <p class="price">Rp 45.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+MWHM+EXTRA" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="reseller">
+    <h3>RESSELER SUBDOMAIN</h3>
+    <p class="price">Rp 15.000</p>
+    <a href="https://wa.me/6281234567890?text=Order+Reseller+Subdo" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="reseller">
+    <h3>RESSELER PANEL</h3>
+    <p class="price">Rp 5.000</p>
+    <a href="https://wa.me/6281234567890?text=Order+Reseller+Panel" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="jasa">
+    <h3>JASA RENAME</h3>
+    <p class="price">Rp 5000</p>
+    <a href="https://wa.me/6285804716393?text=Order+Jasa+rename" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="jasa">
+    <h3>JASA PEMBUATAN RESS</h3>
+    <p class="price">Rp 25.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+Jasa+buatress" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="script">
+    <h3>SCRIPT ADD CURL</h3>
+    <p class="price">Rp 10.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+Script+AddCurl" class="btn-order" target="_blank">Order</a>
+  </div>
+
+  <div class="card" data-category="script">
+    <h3>SCRIPT PANEL</h3>
+    <p class="price">Rp 10.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+Script+Panel" class="btn-order" target="_blank">Order</a>
+  </div>
+
+  <div class="card" data-category="script">
+    <h3>SCRIPT WEB P 10 TAMP</h3>
+    <p class="price">Rp 10.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+WebP" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="script">
+    <h3>SCRIPT WEB P 12 TAMP</h3>
+    <p class="price">Rp 10.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+WebP" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="script">
+    <h3>SCRIPT PAYMENT</h3>
+    <p class="price">Rp 10.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+Script+Payment" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="script">
+    <h3>SCRIPT STORE</h3>
+    <p class="price">Rp 10.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+Script+Store" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="script">
+    <h3>SCRIPT STORE</h3>
+    <p class="price">Rp 10.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+Script+Subdo" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="script">
+    <h3>SCRIPT AUTO RESS</h3>
+    <p class="price">Rp 10.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+Script+Auto" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+  <div class="card" data-category="murid">
+    <h3>MURID LOGO JB</h3>
+    <p class="price">Rp 5.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+MuridLogo" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+    <div class="card" data-category="murid">
+    <h3>MURID SUNTIK SOSMED</h3>
+    <p class="price">Rp 5.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+MuridSuntik" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+    <div class="card" data-category="murid">
+    <h3>MURID NOKOS</h3>
+    <p class="price">Rp 5.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+MuridNokos" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+    <div class="card" data-category="murid">
+    <h3>MURID HOST</h3>
+    <p class="price">Rp 25.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+MuridHost" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+    <div class="card" data-category="jasteb">
+    <h3>JASTEB</h3>
+    <p class="price">Rp 3.000-100.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+Jasteb" class="btn-order" target="_blank">Order</a>
+  </div>
+      <div class="card" data-category="jasteb">
+    <h3>UNCHEAK</h3>
+    <p class="price">Rp 3.000-100.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+Uncheak" class="btn-order" target="_blank">Order</a>
+  </div>
+      <div class="card" data-category="jasteb">
+    <h3>MARGA JASTEB</h3>
+    <p class="price">Rp 70.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+MargaJasteb" class="btn-order" target="_blank">Order</a>
+  </div>
+      <div class="card" data-category="jasteb">
+    <h3>Pt Jasteb</h3>
+    <p class="price">Rp 10.000-100.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+PtJasteb" class="btn-order" target="_blank">Order</a>
+  </div>
+      <div class="card" data-category="jasteb">
+    <h3>TEAM RESS</h3>
+    <p class="price">Rp 10.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+TeamRess" class="btn-order" target="_blank">Order</a>
+  </div>
+      <div class="card" data-category="jasteb">
+    <h3>ADMIN TEAM RESS</h3>
+    <p class="price">Rp 20.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+AdminTeamRess" class="btn-order" target="_blank">Order</a>
+  </div>
+  
+        <div class="card" data-category="jasteb">
+    <h3>FOUNDER MARGA</h3>
+    <p class="price">Rp 70.000</p>
+    <a href="https://wa.me/6285804716393?text=Order+Founder" class="btn-order" target="_blank">Order</a>
+  </div>
+</div>
+
+<div class="social-media" style="max-width: 1100px; margin: 0 auto 40px; text-align: center;">
+
+  <a href="https://youtube.com/@andrehosting15" target="_blank" style="margin: 0 12px; color: var(--text-light); text-decoration: none;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle;">
+      <path d="M19.615 3.184C21.123 3.437 22.357 4.668 22.607 6.175c.41 2.441.41 7.58 0 10.02-.25 1.506-1.484 2.736-2.992 2.987-2.456.412-10.244.412-12.7 0-1.508-.25-2.742-1.48-2.992-2.987-.41-2.44-.41-7.58 0-10.02.25-1.506 1.484-2.736 2.992-2.987 2.456-.412 10.244-.412 12.7 0zm-11.99 3.324v7.012l6.01-3.506-6.01-3.506z"/>
+    </svg>
+    <span style="margin-left: 6px; vertical-align: middle;">YouTube</span>
+  </a>
+
+  <a href="https://tiktok.com/@andrejastebgg" target="_blank" style="margin: 0 12px; color: var(--text-light); text-decoration: none;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle;">
+      <path d="M12 2v13.41a4.5 4.5 0 1 1-4.5-4.5v-3.91a8.001 8.001 0 0 0 4.5 1.02z"/>
+    </svg>
+    <span style="margin-left: 6px; vertical-align: middle;">TikTok</span>
+  </a>
+  
+  <a href="https://instagram.com/andrehost25" target="_blank" style="margin: 0 12px; color: var(--text-light); text-decoration: none;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle;">
+      <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm10 2c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3h10zm-5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4.5-1a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
+    </svg>
+    <span style="margin-left: 6px; vertical-align: middle;">Instagram</span>
+  </a>
+<div style="text-align: center; margin-bottom: 1rem;">
+  <img src="https://i.ibb.co.com/P7bTF0b/20250411-123440.png" alt="Logo" style="height: 80px;">
+</div>
+<div class="footer">
+      &copy;2025 Andre Host All Rights Reserved.
+    </div>
+  </div>
+<script>
+  function filterProducts(category) {
+    const cards = document.querySelectorAll('.card');
+    const buttons = document.querySelectorAll('.filters button');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    cards.forEach(card => {
+      if (category === 'all' || card.dataset.category === category) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  function searchProduct() {
+    const input = document.getElementById("searchBox").value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = text.includes(input) ? 'block' : 'none';
+    });
+  }
+</script>
+
+</body>
+</html>
